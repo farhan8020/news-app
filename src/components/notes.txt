@@ -1,0 +1,455 @@
+npx create-react-app (sab files aagayi) 
+npm start (on our website)
+bootstrap se > navbar c/p using functional component class=className etc
+
+as this website is of news..showing news on website..for that we went to newsapi.org> c/p the code in (sampleOutput.json) 
+which is created by me only.... .json mei data aagaya from news api org ..
+(humne newsapi se data uthaye aur sampleOutput mei paste kiye) use karne ke liye 
+
+<bootstrap> card ka code uthaye..card format mei hum hamare news dikhaye..uske liye bootstrap>Card   c/p
+card chote chote boxes rehte..like our visiting card  
+
+component> newsItems.js = 
+        import React, { Component } from 'react'
+
+        export default class NewsItem extends Component {
+        render() {
+            return (
+            <div>
+                <div className="card mx-3 my-3" style={{ width: "18rem" }}>
+                <img src="..." className="card-img-top" alt="..."/>
+                <div className="card-body">
+                    <h5 className="card-title">Card title</h5> {/*i want title from this.props(we use this.props) in class based component  */}
+                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                    <a href="#" className="btn btn-primary">Go somewhere</a>
+                </div>
+                </div>
+            </div>
+            )
+        }
+        }
+
+#humko <h5>Card title</h5> aur uske niche ka description <p> </p>  props se chaiyye..
+lekin hum yaha Class Based Component use karre..kaha denge props??..ClassBasedComponent mei props ko "this.props" se lete
+render() ke andar hum " let {title,description} = this.props; " lekhenge phir <h5> {title} </h5> & <p className="card-text"> {description} </p>
+
+
+
+BOOTSTRAP CLASSES : imp for css
+
+btn-sm - 'Read More' ka button chota karne ke liye BootStrap's class
+
+col-md-4-  kiye toh..12 ki grade hoti bootstrap mein..toh 4+4+4=12 3 columns aayange  BootStrap's class
+<div className="row">                                        
+           <div className="col-md-4">                                
+            <NewsItem title="myTitle " description="myDescription" imagegUrl=""/> 
+          </div>                                                     
+          <div className="col-md-4">
+            <NewsItem title="myTitle " description="myDescription "/>
+          </div>
+          <div className="col-md-4">
+            <NewsItem title="myTitle " description="myDescription "/>
+          </div>
+        </div>
+
+my-3 ..upar se niche ke beech mei margin 
+mx-3
+className='container my-3' 
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CONSTRUCTOR : 
+
+1)jab bhi constructor() use karonge.. super() ko call karna padhenga its in syntax
+2)constructor() jab run karenga jab bhi NewItem class ka object banenga tab..
+3) matlab joh class mei constructor() use karre...woh class ka jab object banenga tab constructor() run honga..
+eg class NewItem 
+
+export default class NewsItem extends Component {
+constructor(){
+    super();
+    this.state = {
+          articles : this.articles   //setting state with out data in constructor
+} 
+}                         
+
+class component uses (this.state & this.setState) 
+functional component uses const [state,setState] = useState(null)
+
+this.state is similar to const [state,setState] = useState(null);
+
+this.setState is similar to setState (to change values using function )
+EXAMPLES WHICH WILL CLEAR THE CONCEPT 
+
+1. Functional Components: useState:                                       2. Class Components: this.state and this.setState()
+
+import { useState } from "react";                                           class Counter extends React.Component {
+                                                                                constructor(props) {
+function Counter() {                                                              super(props);
+  const [count, setCount] = useState(0);                                          this.state = { count: 0 };}             
+  const increment = () => {
+    setCount(count + 1);
+  };                                                                               increment = () => {
+                                                                                   this.setState({ count: this.state.count + 1 });
+ return (                                                                          };
+    <div>
+      <p>{count}</p>                                                        render() {
+      <button onClick={increment}>+</button>                                return (
+    </div>                                                                   <div>
+  );                                                                          <p>{this.state.count}</p>
+}                                                                             <button onClick={this.increment}>+</button>
+                                                                             </div>
+                                                                             );
+                                                                              }
+                                                                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+Props in Functional Components (Syntax):
+const Welcome =(props)=>{
+    return (
+        <h1> Hello , {props.name} </h1>
+    )
+}
+in app.js <Welcome name="Farhan" />
+------------------------------------------------------------------------------------------------------------
+
+Props in Class Components (Syntax):
+import React, { Component } from "react";
+
+class Welcome extends Component {
+  render() {
+    return (
+      <h1>Hello {this.props.name}</h1>
+    );
+  }
+}
+
+export default Welcome; 
+---------------------------------------------------------------------------------------------------------------------------------
+or agar bahut sare ko this.props mei karna ho in ClassBasedComponent..
+jaise name, title, age toh ek sath this.props ko assign karo..render ke andar..
+import React, { Component } from "react";
+
+class Welcome extends Component {
+  render() {
+    let { description, imagegUrl, newsUrl  } = this.props;
+    return (
+      <h1>Hello {name}</h1>
+      <h1> my age is {age} </h1>
+      <h1> this is my {description} </h1>
+    );
+  }
+}
+
+in app.js <Welcome name="Farhan" age='21'description= "this is me" />
+---------------------------------------------------------------------------------------------------------------------------------------------------
+// jaise hum hamesha karte..this.props mei sab dale..phir {} javascript brackets use kar ke access karte..
+//waise hi meine yaha "Read More" button click par href{newsUrl} route kiye..newsUrl ko this.props mei likha 
+//phir hamare News.js mei apne articles ke values ko element.title, element.description, element.url bolkar assign kiya..
+//sab apne website par display hua  
+// // dekho aaisa hai : "articles": [
+//     {
+//       "source": {                                   element.title,element.description, elemet.url bolkar access kar sakhte.
+//         "id": "news24",                             bcz humne constructor(){                   
+                                                                // super();                        
+                                                                // this.state = {
+                                                                // articles : this.articles bolkar phir niche  {this.state.articles.map((element)=>{ } 
+//         "name": "News24"                                     // element paraments diye hai apen articles mein 
+//       },
+//       "author": "Nicolette Lategan",
+//       "title": "England re-route to Pretoria for Women’s World Cup prep amid conflict in Middle East",
+//       "description": "The England Women’s squad will continue their preparations for a home T20 Cricket World Cup later this year in Pretoria, after the ongoing conflict in the Middle East required them to change their initial destination of Abu Dhabi.",
+//       "url": "https://www.news24.com/sport/cricket/england-re-route-to-pretoria-for-womens-world-cup-prep-amid-conflict-in-middle-east-20260307-0297",
+//       "urlToImage": "https://news24cobalt.24.co.za/resources/02a3-201602b811e4-8226ee12baa3-1000/format/inline/gettyimages-2243927784.jpeg",
+//       "publishedAt": "2026-03-07T08:16:24",
+//       "content": "The England Womens squad will continue preparations for a home T20 World Cup later this year in Pretoria, after the ongoing conflict in the Middle East required them to change their initial destinati… [+1857 chars]"
+//     },
+
+
+------------------------------------------------------------------------------------
+
+1) articles = [                                
+                                      //1) articles ko yaha manualy dale in [] from our sampleOutput.json file
+    {                            
+      "source": {
+        "id": "news24",
+        "name": "News24"}..etc } ] 
+
+
+
+ 2) constructor(){                       
+        super();                        {/* this.state is object..News class ka object ban gya abh constructor run honga */}
+        this.state = {
+          articles : this.article} }   //yeh sab code render() ke upar likha hai
+
+
+3)
+render() {
+return ( 
+      <div className='container my-3'  >
+        <h4> NewsMonkey - Top Headlines </h4>
+         <div className="row " >                                                                                                                   
+             {this.state.articles.map((element)=>{                                                        
+              return <div className="col-md-4" key={element.url}>                                
+                <NewsItem title={element.title.slice(0,45)} description={element.description.slice(0,88)} imagegUrl={element.urlToImage} newsUrl = {element.url} /> )}}}
+
+
+
+
+
+
+
+---- using fetch() api, fetch api is asynchronous isliye "async" use kiye -------------------------------------------------------------------------------------------------------------------------------- 
+---- //fetch() is asynchronous and returns a Promise, so you must use "await" to get the actual data --------------------------------------------------------
+
+1) constructor(){
+  super();
+  this.state{
+    articles = [] //AGAR YAHA POORA ATRICLES DAL RAHE HAI MANUALLY..
+                  //TOH LifeCycle method skip karo..zarurat hi nahi hongi na..direct 1) se 3) step 
+  }
+
+//LifeCycle method hai, render() ke baad run honga, fetch is api  
+2) async componentDidMount(){
+  let url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=07297bb2857745ff822fc1abc5ce7f7a";
+  let data = await fetch(url);
+  let parseData = await data.json();        // .json() ncz data ko json mei dalneke liye 
+  this.setState({articles: parseData.articles});
+}
+
+3)render() {
+return ( 
+      <div className='container my-3'  >
+        <h4> NewsMonkey - Top Headlines </h4>
+         <div className="row " >                                                                                                                   
+             {this.state.articles.map((element)=>{                                                        
+              return <div className="col-md-4" key={element.url}>                                
+                <NewsItem title={element.title.slice(0,45)} description={element.description.slice(0,88)} imagegUrl={element.urlToImage} newsUrl = {element.url} /> )}}}
+
+
+
+
+
+
+
+
+
+
+
+                
+
+
+STEPS TO PUT DATA ON WEBSITE USING  constructor to render our articles = [] in this.state ,LifeCycle method componentDidMount(), phir change state  
+IMPORTANT POINT: .json mei koi bhi data ho..eg:sampleOutput.json(json file mei data ek variable mei store hota hai..hamara data articles = [ sdnsjds ] mei store hai )
+
+1) ek constructor banao usmei this.state use karke empty articles = [] banao.. (json mei data ek variable mei stored hota hai eg: articles:[titlez: etc] )
+2) phir apna LifeCycle method componentDidMount() banao..usmei url deke.. let data = await fetch(url);
+   let parseData = await data.json; BOLKAR this.setState({articles:parseData.articles}); (apne articles ki state change kiye)
+   abh apne articles ke data aagaya "articles" mei  
+NOTE : yeh 2 steps render, return() ke upar likhne ka <News.js> mei..app.js mei <News.js/> hum likhenege below <navBar/> 
+3) <div banae "row" ki usmei apni articles ko map kiye with element(element apne articles ke elements hai eg : title,url,urlToImage,description etc)
+   arrow function mei <newsItems/> ko bulaye <newsItems/> file mei card hai jismei humne this.props se (title,description,imagegUrl, newsUrl) pass kiye hai
+   toh yaha humne <newsItems title={element.title} description={element.description} /> etc likhe..
+   elements (apne articles mei title,description etc same hai apne <NewItem> ke titile,description etc se jisko humne this.props se pass kiye )
+
+render() {
+    return ( 
+      <div className='container my-3'  >
+        <h3> NewsMonkey - Top Headlines </h3>
+         <div className="row " >                                                        
+             {this.state.articles.map((element)=>{                                                           
+              return <div className="col-md-4" key={element.url}>                               
+                <NewsItem title={element.title?element.title.slice(0,45):""} description={element.description?element.description.slice(0,88):""} 
+                imageUrl={element.urlToImage} newsUrl = {element.url} /> 
+              </div>})}                             
+                                
+        </div>       
+        
+      </div>
+    )
+  }
+}
+
+
+
+data agar variable mei nahi honga toh dalo ek variable mei poora data... eg : articles = [ dsadasdsad] 
+woh variable ko constructor mei use karo this.state ke andar.. 
+
+agar articles = [] articles ko empty karre toh LifeCycle method use kar ke "url> data> parseData > setState use karna honga
+agar articles = [c/p poora data manually ] use karre toh LifeCycle method skip karo aur direct 3rd step 
+          <div className="row " >                                                        
+          {this.state.articles.map((element)=>{                                                           
+                return <div className="col-md-4" key={element.url}>                               
+                <NewsItem title={element.title?element.title.slice(0,45):""} description={element.description?element.description.slice(0,88):""} 
+                 imageUrl={element.urlToImage} newsUrl = {element.url} /> 
+                       </div>})}           
+
+
+
+Google<infinity scroll react< 1st wala (NPM...)
+#commentOut preview,next button and their onClick() functions too
+1ST )  npm i react-infinite-scroll-component
+2ND) import InfiniteScroll from "react-infinite-scroll-component";
+for infinity scroll we need only 2 things <InfiniteScroll> in render() 
+& fetchMoreData() function above render() 
+c/p from Google < infinity scroll react < npm 1st wala 
+
+c/p  this tag from Google infinite scroll react < 1st wala
+      <InfiniteScroll
+          dataLength={this.state.items.length}
+          next={this.fetchMoreData}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+        >                                                                  c/p in in render() 
+
+ our edits for <InfiniteScroll> tag 
+
+      <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.articles.length < this.state.totalResults} //aaur hai kya article to load
+          loader={<Spinner />}     
+        >        
+
+c/p  fetchMoreData = () => {
+    c/p everything from our componentDidMount() function
+    only add " articles: prevState.articles.concat(parsedData.articles),"
+    ( bcz this concat is imp & it is also given in 
+    Google< InfiniteScroll React < 1st wala article (NPM..) )
+  };                                                                        c/p above render()
+
+-------------------------------------------------------------------------------------------------------------------------------
+Google< react top lading bar < 1st wala article (NPM....)
+npm i react-top-loading-bar - in terminal
+it is package in react same like InfiniteScroll :npm i react-infinite-scroll-component
+import LoadingBar from "react-top-loading-bar"; 
+(in App.js mei ) bcz loading bar main page joh dikhta hai 1st
+waha dikhana hai..apn a main page App.js hai isliye 
+
+constructor(){             //1) progress all c/p from Google<react top loading 
+    super();
+    this.state = {
+      progress: 0
+    }
+  }
+
+  setProgress = (progress) => {
+    this.setState({ progress: progress });
+  }
+
+ #2) Paste jaha tumne loading line chaiyye..
+ mujhe <navBar/> ke niche chaiyye isliye meine waha c/p kiya
+ yeh : 
+
+ <LoadingBar
+    color="#f11946"
+    progress={this.state.progress}
+    onLoaderFinished={() => this.setProgress(0)}
+  />
+ 3) Fix (Pass setProgress to every News component)
+ yeh : "setProgress={this.setProgress}"
+ <Route exact path="/" element={
+  <News setProgress={this.setProgress} key="general" country="us" category="general" />
+} />
+
+<Route exact path="/business" element={
+  <News setProgress={this.setProgress} key="business" country="us" category="business" />
+} />
+
+4) Then update your News.js jaha tumne chhaiyye : this.props.setProgress(10);
+                                                : this.props.setProgress(30);  this.props.setProgress(70); 
+
+
+
+
+
+
+
+TOP LOADING BAR PACKAGE IN REACT (kuch nah bus ek red line aayangi upar when clicked )
+steps for top loading bar (package in react) red line aata buss when clicked 
+1) Install the Loading Bar Package   -- npm install react-top-loading-bar
+2) Import the Loading Bar in App.js
+3) Create State for Progress
+4) Add the Loading Bar Component (jaha chaiyye waha) eg: <LoadingBar color="#f11946">
+5) Pass setProgress as props to News Component (every route par setProgress={this.setProgress})
+6) Use Progress in News.js this.props.setProgress(10); etc 
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Passing api key using environment variable(its a file where ) (so no one harm it ):
+An environment variable is a file in which we store important variables in key:value pair,
+It is used to store sensitive or configurable values like API keys, passwords etc in key:value pair 
+eg : REACT_APP_NEWS_API=07297bb2857745ff822fc1abc5ce7f7a
+
+we can access our .env.local file using " process.env.REACT_APP_NEWS_API; " process.env
+
+1) Pass the api key using {this.props.apiKey} props..where actual apiKey=07297bb28 were written in News.js 
+
+replace &apiKey=07297bb2857745ff822fc1abc5ce7f7a to &piKey=${this.props.apiKey} in url 
+
+2) write the value of ${this.props.apiKey} in App.js 
+    <News setProgress={this.setProgress} apiKey = {this.apiKey} key="general" country = 'us' category="general"/>} 
+    write apiKey = {this.apiKey} in every route..we are giving the value of ${this.props.apiKey} which we wrote in News.js
+   // we passed apiKey through this.props in News.js right and now apiKey = {this.apiKey} in App.js 
+
+3) The value is 
+   in App.js write .. class App extends Component {
+                        apiKey = process.env.REACT_APP_NEWS_API    
+                        //we stored our api key in NewsApp> .env.local (this is environment varible)
+  we used environment variable which is a file we can write and save the important things like apiKey,password in out .env.local file
+
+4) Create .env.local file and assign our apiKey in .env.local file: " REACT_APP_NEWS_API=07297bb2857745ff822fc1abc5ce7f7a "
+    in .env.local file we write REACT_APP_NEWS_API=07297bb2857745ff822fc1abc5ce7f7a
+    we write our apiKey here in .env.local file, so we can use it through props..so no one sees and harm it 
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Commanly used React Hooks 
+
+useState : state use kar sakhte..aur state ki value ko set kar sakhte 
+useEffect : joh kaam hum componentDidMount() se kar rahe the..woh kaam humloh useEffect par kar sakhte hai
+useContext : its an API..functions ko globally available kara deti hai..use karne ke liye globally
+useRef : Return karta hai ek muteable Reference object..JSX ke andar ek <tag> hai..uska Reference rakhne ke liye
+useRef use karte hai 
+
+
+
+MERN : Mongodb , Express js, React JS , Node js
+
+MongoDB - database hai..(yaha hum javascript object patak sakhte hai..bus dalte raho  )
+1st : Google > mongodb.com > MongoDB Community Server > Download MongoDB for windows
+
+
+Express.js - Framework for Node.js / package like react 
+$ " npm install express --save " in Terminal like react 
+hum api banayange express.js use karke..(api like NewsApi )
+aur yeh Api ko use karenga react js  
+abh khudki ap banayenge..NewsAPI ke jaise express js use karke ..
+
+
+React JS - Framework (JavaScript library used to build user interfaces (UI), especially for single-page web applications.)
+
+Node js - Java Script 
+
+
+
+
