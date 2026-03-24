@@ -8,10 +8,10 @@ class NavBar extends Component{
         navbar.classList.remove("show");
         }
     };
-    
+
     render() {
         return(
-                <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+                <nav className={`navbar navbar-expand-lg navbar-${this.props.mode} navbar-${this.props.mode} fixed-top`}>
                 <div className="container-fluid">
                     <Link className="navbar-brand" onClick={this.closeNavbar} to="/">NewsMonkey</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,18 @@ class NavBar extends Component{
                         <Link className="nav-link" to="/technology" onClick={this.closeNavbar} >Technology</Link>
                         </li>                            
                     </ul>
+                     {/* Dark/Light mode toggle */}
+                        <div className="form-check form-switch text-light mx-3">
+                            <input 
+                                className="form-check-input" 
+                                type="checkbox" 
+                                onClick={this.props.toggleMode} 
+                                id="modeSwitch"
+                            />
+                            <label className="form-check-label" htmlFor="modeSwitch">
+                                {this.props.mode === "light" ? "Dark Mode" : "Light Mode"}
+                            </label>
+                        </div>
                     </div>
                 </div>
                 </nav>

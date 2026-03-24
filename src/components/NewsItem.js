@@ -4,7 +4,7 @@ export default class NewsItem extends Component {
     let { description, imageUrl, title, newsUrl , author, date } = this.props;    //or directly <h1>Hello {this.props.name}</h1>*/}
     return (
       <div className='container my-3'>
-        <div className="card" style={{ width: "19rem", height: "480px" }}>      {/* ternary operator used bcz agar img null hai in articles to yeh https:""wali image load karo..default mein */}
+        <div className={`card ${this.props.mode === "dark" ? "bg-dark text-light" : ""}`} style={{ width: "19rem", height: "480px" }}>
         <img src={!imageUrl?"https://images.unsplash.com/photo-1557804506-669a67965ba0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400":imageUrl} className="card-img-top" alt="news" style={{ height: "200px", objectFit: "cover" }} onError={(e) => {e.target.src = "https://images.unsplash.com/photo-1557804506-669a67965ba0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400";
   }}/>
         <div className="card-body">
@@ -18,6 +18,7 @@ export default class NewsItem extends Component {
     )
   }
 }
+
 
 
 
