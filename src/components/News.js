@@ -21,7 +21,7 @@ export default class News extends Component {
 
     this.setState({ loading: true });
 
-    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&max=20&page=${this.state.page}&apikey=${this.props.apiKey}`;
+    let url = `https://cors-anywhere.herokuapp.com/https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&max=20&page=${this.state.page}&apikey=${this.props.apiKey}`;
     
     let data = await fetch(url);
     this.props.setProgress(30);
@@ -44,7 +44,7 @@ export default class News extends Component {
 
     this.setState({ loading: true });
 
-    let url = `https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&max=20&page=${nextPage}&apikey=${this.props.apiKey}`;
+    let url = `https://cors-anywhere.herokuapp.com/https://gnews.io/api/v4/top-headlines?category=${this.props.category}&lang=en&country=${this.props.country}&max=20&page=${nextPage}&apikey=${this.props.apiKey}`;
 
     try {
       let data = await fetch(url);
