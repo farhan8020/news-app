@@ -87,7 +87,7 @@ export default class News extends Component {
 
   render() {
     return ( 
-      <div className='container my-3'>                                                                           
+      <div className='container my-3' style={{ marginTop: "80px" }}>                                                                           
         <a href="/" className='text-center my-4 fw-bold text-primary' style={{textDecoration:"none"}}>
           <h3 >
             NewsMonkey - Top {this.props.category.charAt(0).toUpperCase() + this.props.category.slice(1)}
