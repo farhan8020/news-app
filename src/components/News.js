@@ -21,7 +21,7 @@ const News = (props) => {
 
       props.setProgress(10);
 
-      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}&country=in`;
+      const url = `https://newsdata.io/api/1/latest?apikey=${props.apiKey}&language=en&category=${validCategory}&country=in`;
 
       setLoading(true);
 
@@ -39,7 +39,14 @@ const News = (props) => {
         return;
       }
 
-      setArticles(Array.isArray(parsedData.results) ? parsedData.results : []);
+      // ✅ Filter duplicates on initial load using link
+      let results = Array.isArray(parsedData.results) ? parsedData.results : [];
+      results = results.filter(
+        (item, index, self) =>
+          index === self.findIndex((a) => a.link === item.link)
+      );
+
+      setArticles(results);
       setNextPage(parsedData.nextPage || null);
 
       setLoading(false);
@@ -55,7 +62,7 @@ const News = (props) => {
     try {
       if (!nextPage) return;
 
-      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}&country=in&page=${nextPage}`;
+      const url = `https://newsdata.io/api/1/latest?apikey=${props.apiKey}&language=en&category=${validCategory}&country=in&page=${nextPage}`;
 
       let response = await fetch(url);
       let parsedData = await response.json();
