@@ -23,7 +23,7 @@ const News = (props) => {
 
       props.setProgress(10);
 
-      const url = `https://newsdata.io/api/1/latest?apikey=${props.apiKey}&language=en&category=${validCategory}`;
+      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}`;
 
       setLoading(true);
 
@@ -60,7 +60,7 @@ const News = (props) => {
     try {
       if (!nextPage) return;
 
-      const url = `https://newsdata.io/api/1/latest?apikey=${props.apiKey}&language=en&category=${validCategory}&page=${nextPage}`;
+      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}&page=${nextPage}`;
 
       let response = await fetch(url);
       let parsedData = await response.json();
