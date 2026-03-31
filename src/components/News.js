@@ -4,12 +4,10 @@ import Spinner from "./Spinner";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const News = (props) => {
-
   const [articles, setArticles] = useState([]);
   const [nextPage, setNextPage] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ FIX: replace invalid "general" with "top"
   const validCategory = props.category === "general" ? "top" : props.category;
 
   useEffect(() => {
@@ -23,7 +21,7 @@ const News = (props) => {
 
       props.setProgress(10);
 
-      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}`;
+      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}&country=in`;
 
       setLoading(true);
 
@@ -34,7 +32,6 @@ const News = (props) => {
 
       props.setProgress(70);
 
-      // ✅ HANDLE API ERROR
       if (parsedData.status === "error") {
         console.error("API ERROR:", parsedData);
         setArticles([]);
@@ -42,13 +39,11 @@ const News = (props) => {
         return;
       }
 
-      // ✅ SAFE ARRAY CHECK
       setArticles(Array.isArray(parsedData.results) ? parsedData.results : []);
       setNextPage(parsedData.nextPage || null);
 
       setLoading(false);
       props.setProgress(100);
-
     } catch (error) {
       console.error("Fetch Error:", error);
       setArticles([]);
@@ -60,7 +55,7 @@ const News = (props) => {
     try {
       if (!nextPage) return;
 
-      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}&page=${nextPage}`;
+      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}&country=in&page=${nextPage}`;
 
       let response = await fetch(url);
       let parsedData = await response.json();
@@ -68,10 +63,14 @@ const News = (props) => {
       if (parsedData.status === "error") return;
 
       if (Array.isArray(parsedData.results)) {
-        setArticles(prev => prev.concat(parsedData.results));
+        // Filter out duplicates using article link
+        const newArticles = parsedData.results.filter(
+          (item) => !articles.some((a) => a.link === item.link)
+        );
+
+        setArticles((prev) => prev.concat(newArticles));
         setNextPage(parsedData.nextPage || null);
       }
-
     } catch (error) {
       console.error("Fetch More Error:", error);
     }
@@ -79,9 +78,8 @@ const News = (props) => {
 
   return (
     <div className="container my-3">
-
       <h3 className="text-center my-4" style={{ paddingTop: "60px" }}>
-        NewsMonkey - Top {validCategory.toUpperCase()}
+        NewsMonkey - Top {validCategory.toUpperCase()} (India)
       </h3>
 
       {loading && <Spinner />}
@@ -92,29 +90,28 @@ const News = (props) => {
         hasMore={nextPage !== null}
         loader={<Spinner />}
       >
-
         <div className="container">
           <div className="row">
-
-            {Array.isArray(articles) && articles.map((element, index) => (
-              <div className="col-md-4" key={index}>
-                <NewsItem
-                  title={element.title?.slice(0, 45) || ""}
-                  description={element.description?.slice(0, 80) || ""}
-                  imageUrl={element.image_url || "https://via.placeholder.com/150"}
-                  newsUrl={element.link}
-                  author={element.creator?.[0] || "Unknown"}
-                  date={element.pubDate}
-                  mode={props.mode}
-                />
-              </div>
-            ))}
-
+            {Array.isArray(articles) &&
+              articles.map((element) => (
+                <div className="col-md-4" key={element.link}>
+                  <NewsItem
+                    title={element.title?.slice(0, 45) || ""}
+                    description={element.description?.slice(0, 80) || ""}
+                    imageUrl={
+                      element.image_url ||
+                      "https://placehold.co/400x200?text=No+Image"
+                    }
+                    newsUrl={element.link}
+                    author={element.creator?.[0] || "Unknown"}
+                    date={element.pubDate}
+                    mode={props.mode}
+                  />
+                </div>
+              ))}
           </div>
         </div>
-
       </InfiniteScroll>
-
     </div>
   );
 };
