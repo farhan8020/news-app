@@ -20,9 +20,10 @@ const News = (props) => {
       document.title = `${validCategory.toUpperCase()} - NewsMonkey`;
 
       props.setProgress(10);
-      setLoading(true);
 
-      const url = `https://newsdata.io/api/1/latest?apikey=${props.apiKey}&language=en&category=${validCategory}&country=in`;
+      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}&country=in`;
+
+      setLoading(true);
 
       let response = await fetch(url);
       let parsedData = await response.json();
@@ -38,7 +39,6 @@ const News = (props) => {
         return;
       }
 
-      // Save articles and nextPage safely
       setArticles(Array.isArray(parsedData.results) ? parsedData.results : []);
       setNextPage(parsedData.nextPage || null);
 
@@ -55,7 +55,7 @@ const News = (props) => {
     try {
       if (!nextPage) return;
 
-      const url = `https://newsdata.io/api/1/latest?apikey=${props.apiKey}&language=en&category=${validCategory}&country=in&page=${nextPage}`;
+      const url = `https://newsdata.io/api/1/latest?apikey=pub_0d1cfcee098e4e1799a7169290994ba0&language=en&category=${validCategory}&country=in&page=${nextPage}`;
 
       let response = await fetch(url);
       let parsedData = await response.json();
@@ -63,7 +63,7 @@ const News = (props) => {
       if (parsedData.status === "error") return;
 
       if (Array.isArray(parsedData.results)) {
-        // Remove duplicates by link
+        // Filter out duplicates using article link
         const newArticles = parsedData.results.filter(
           (item) => !articles.some((a) => a.link === item.link)
         );
